@@ -38,3 +38,5 @@ terraform.rc
 key.pem
 set_env.bat
 env.sh
+get_win_pwd.bat
+lhan-aws-us-east-1.pem

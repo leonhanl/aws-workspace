@@ -19,6 +19,14 @@ resource "aws_security_group" "demo_ec2_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "RDP"
+    from_port   = 3389
+    to_port     = 3389
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -31,15 +39,32 @@ resource "aws_security_group" "demo_ec2_sg" {
   }
 }
 
-resource "aws_instance" "demo_ec2" {
+resource "aws_instance" "demo_ec2_linux" {
   ami                         = "ami-0ec18f6103c5e0491"
-  instance_type               = "t2.micro"
+  instance_type               = "t2.medium"    # t2.medium   t2.xlarge
+
   subnet_id                   = module.vpc.public_subnets[0]
   vpc_security_group_ids      = [aws_security_group.demo_ec2_sg.id]
   key_name                    = "lhan-aws-us-east-1"
   associate_public_ip_address = true
 
   tags = {
-    Name = "demo-ec2"
+    Name = "demo-ec2-linux"
   }
 }
+
+
+resource "aws_instance" "demo_ec2_windows" {
+  ami                         = "ami-0345f44fe05216fc4"
+  instance_type               = "t2.medium"    # t2.medium   t2.xlarge
+
+  subnet_id                   = module.vpc.public_subnets[0]
+  vpc_security_group_ids      = [aws_security_group.demo_ec2_sg.id]
+  key_name                    = "lhan-aws-us-east-1"
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "demo-ec2-windows"
+  }
+}
+
